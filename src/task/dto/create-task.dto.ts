@@ -1,9 +1,13 @@
-export class CreateTaskDTO {
-    title: string;
-    description: string;
+import { IsNotEmpty, IsString, MaxLength, MinLength } from "class-validator";
 
-    constructor(title: string, description: string) {
-        this.title = title;
-        this.description = description;
-    }
+export class CreateTaskDTO {
+    @IsString()
+    @IsNotEmpty()
+    @MinLength(3)
+    @MaxLength(50)
+    title: string;
+
+    @IsString()
+    @IsNotEmpty()
+    description: string;
 }
