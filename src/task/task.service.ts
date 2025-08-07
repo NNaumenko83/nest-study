@@ -23,7 +23,7 @@ export class TaskService {
         return this.tasks;
     }
 
-    getTaskById(id: number): { id: number; title: string; description: string; completed: boolean } | undefined {
+    getTaskById(id: number): { id: number; title: string; description: string; completed: boolean } {
         const task = this.tasks.find(task => task.id === id);
         if (!task) {
             throw new NotFoundException(`Task with id ${id} not found`);
@@ -45,12 +45,26 @@ export class TaskService {
     updateTask(id: number, dto: UpdateTaskDTO) {
         const { completed, title, description } = dto;
         const task = this.getTaskById(id);
-        if (task) {
-            task.title = title;
-            task.description = description;
-            task.completed = completed;
-        }
+
+        task.title = title;
+        task.description = description;
+        task.completed = completed;
+
         return task;
+    }
+
+    updatePatchTask(id: number, dto: Partial<UpdateTaskDTO>) {
+        const task = this.getTaskById(id);
+
+        Object.assign(task, dto);
+
+        return task;
+    }
+
+    deleteTask(id: number) {
+        const task = this.getTaskById(id);
+        this.tasks = this.tasks.filter(task => task.id !== id);
+        return task
     }
 
 }
