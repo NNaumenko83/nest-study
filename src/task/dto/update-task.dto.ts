@@ -1,4 +1,4 @@
-import { IsBoolean, IsNotEmpty, IsString, Length } from "class-validator";
+import { IsBoolean, IsNotEmpty, IsNumber, IsOptional, IsString, Length } from "class-validator";
 
 export class UpdateTaskDTO {
     @IsString({ message: 'Title must be a string!!!!!!' })
@@ -9,9 +9,12 @@ export class UpdateTaskDTO {
     @IsString()
     @IsNotEmpty()
     @Length(3, 200)
+    @IsOptional()
+    @IsString({ message: 'Description must be a string!!!!!!' })
     description: string;
 
     @IsNotEmpty()
     @IsBoolean()
     completed: boolean;
+
 }

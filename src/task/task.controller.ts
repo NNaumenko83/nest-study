@@ -22,7 +22,7 @@ export class TaskController {
 
   @Post()
   createTask(@Body() createDTO: CreateTaskDTO): TaskDTO {
-    return this.taskService.createTask(createDTO.title, createDTO.description);
+    return this.taskService.createTask(createDTO);
   }
 
   @Put(':id')
