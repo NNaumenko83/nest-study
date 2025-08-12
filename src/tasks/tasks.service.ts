@@ -1,18 +1,23 @@
 import { Injectable } from '@nestjs/common';
 import { CreateTaskDto } from './dto/create-task.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { TaskEntity } from './entities/task.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class TasksService {
 
+    constructor(
+        @InjectRepository(TaskEntity)
+        private readonly taskRepository: Repository<TaskEntity>,
+    ) { }
 
     createTask(dto: CreateTaskDto) {
-        return { id: Date.now(), title, description };
+        const task = this.taskRepository.create(dto);
+        return this.taskRepository.save(task);
     }
 
     getAllTasks() {
-        return [
-            { id: 1, title: 'Task One', description: 'This is task one' },
-            { id: 2, title: 'Task Two', description: 'This is task two' },
-        ];
+        return this.taskRepository.find();
     }
 }
