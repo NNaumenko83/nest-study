@@ -13,7 +13,7 @@ export class TaskEntity {
     @Column()
     description: string;
 
-    @Column()
+    @Column({ default: false })
     status: boolean;
 
     @CreateDateColumn()
