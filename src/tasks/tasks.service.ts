@@ -1,7 +1,13 @@
 import { Injectable } from '@nestjs/common';
+import { CreateTaskDto } from './dto/create-task.dto';
 
 @Injectable()
 export class TasksService {
+
+
+    createTask(dto: CreateTaskDto) {
+        return { id: Date.now(), title, description };
+    }
 
     getAllTasks() {
         return [
