@@ -10,4 +10,5 @@ import { MovieEntity } from './entities/movie.entity';
   providers: [MovieService],
   exports: [MovieService], // Exporting MovieService for use in other modules
 })
+
 export class MovieModule { }
