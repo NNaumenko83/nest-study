@@ -12,12 +12,12 @@ export class TasksService {
         private readonly taskRepository: Repository<TaskEntity>,
     ) { }
 
-    createTask(dto: CreateTaskDto) {
+    createTask(dto: CreateTaskDto): Promise<TaskEntity> {
         const task = this.taskRepository.create(dto);
         return this.taskRepository.save(task);
     }
 
-    getAllTasks() {
+    getAllTasks(): Promise<TaskEntity[]> {
         return this.taskRepository.find();
     }
 }
