@@ -1,10 +1,11 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { ReviewEntity } from "src/review/entities/review.entity";
+import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity({ name: 'movies' })
 export class MovieEntity {
 
-    @PrimaryGeneratedColumn()
-    id: number;
+    @PrimaryGeneratedColumn("uuid")
+    id: string;
 
     @Column()
     title: string;
@@ -12,12 +13,18 @@ export class MovieEntity {
     @Column()
     releaseYear: number;
 
-    @Column({ default: false })
+    @Column({ name: "rating", type: "decimal", precision: 3, scale: 1, default: 0.0 })
+    rating: number;
+
+    @Column({ name: "is_public", default: false })
     isPublic: boolean;
 
-    @CreateDateColumn()
+    @OneToMany(() => ReviewEntity, review => review.movie, { cascade: true })
+    reviews: ReviewEntity[];
+
+    @CreateDateColumn({ name: "created_at" })
     createdAt: Date;
 
-    @UpdateDateColumn()
+    @UpdateDateColumn({ name: "updated_at" })
     updatedAt: Date;
 }

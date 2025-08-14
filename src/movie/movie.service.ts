@@ -18,13 +18,13 @@ export class MovieService {
         return this.movieRepository.save(movie);
     }
 
-    async update(id: number, dto: MovieDto): Promise<MovieEntity> {
+    async update(id: string, dto: MovieDto): Promise<MovieEntity> {
         const movie = await this.findById(id);
         Object.assign(movie, dto);
         return this.movieRepository.save(movie);
     }
 
-    async findById(id: number): Promise<MovieEntity> {
+    async findById(id: string): Promise<MovieEntity> {
         const movie = await this.movieRepository.findOne({ where: { id } });
         if (!movie) {
             throw new HttpException("Movie not found", HttpStatus.NOT_FOUND);
@@ -32,7 +32,7 @@ export class MovieService {
         return movie;
     }
 
-    async delete(id: number): Promise<string> {
+    async delete(id: string): Promise<string> {
         const movie = await this.findById(id);
         if (!movie) {
             throw new HttpException("Movie not found", HttpStatus.NOT_FOUND);
