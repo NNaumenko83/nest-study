@@ -1,5 +1,6 @@
+import { ActorEntity } from "src/actor/entities/actor.entity";
 import { ReviewEntity } from "src/review/entities/review.entity";
-import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity({ name: 'movies' })
 export class MovieEntity {
@@ -18,6 +19,21 @@ export class MovieEntity {
 
     @Column({ name: "is_public", default: false })
     isPublic: boolean;
+
+    @ManyToMany(() => ActorEntity, actor => actor.movies)
+    @JoinTable({
+        name: "movies_actors",
+        joinColumn: {
+            name: "movie_id",
+            referencedColumnName: "id"
+        },
+        inverseJoinColumn: {
+            name: "actor_id",
+            referencedColumnName: "id"
+
+        }
+    })
+    actors: ActorEntity[];
 
     @OneToMany(() => ReviewEntity, review => review.movie, { cascade: true })
     reviews: ReviewEntity[];
