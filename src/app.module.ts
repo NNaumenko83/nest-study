@@ -16,8 +16,10 @@ import { PrismaModule } from './prisma/prisma.module';
       isGlobal: true, // Make the configuration globally available
     }),
     PrismaModule,
-
-    MovieModule, ReviewModule, ActorModule],
+    MovieModule,
+    ReviewModule,
+    ActorModule
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
