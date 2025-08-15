@@ -8,12 +8,14 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 
 import { ReviewModule } from './review/review.module';
 import { ActorModule } from './actor/actor.module';
+import { PrismaModule } from './prisma/prisma.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true, // Make the configuration globally available
     }),
+    PrismaModule,
 
     MovieModule, ReviewModule, ActorModule],
   controllers: [AppController],
