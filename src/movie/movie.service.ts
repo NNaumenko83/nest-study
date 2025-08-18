@@ -42,27 +42,53 @@ export class MovieService {
 
     }
 
-    // async update(id: string, dto: MovieDto): Promise<MovieEntity> {
-    //     const movie = await this.findById(id);
-    //     Object.assign(movie, dto);
-    //     return this.movieRepository.save(movie);
-    // }
+    async update(id: string, dto: MovieDto): Promise<Movie> {
+        const movie = await this.findById(id);
+
+        const actors = await this.prisma.actor.findMany({
+            where: { id: { in: dto.actorIds } }
+        });
+
+        if (!actors || !actors.length) {
+            throw new NotFoundException("Actors not found");
+        }
+
+        Object.assign(movie, dto);
+        return this.prisma.movie.update({
+            where: { id: movie.id },
+            data: {
+                title: dto.title,
+                releaseYear: dto.releaseYear,
+                actors: {
+                    connect: actors.map(actor => ({ id: actor.id }))
+                },
+                poster: dto.imageUrl
+                    ? {
+                        upsert: {
+                            create: { url: dto.imageUrl },
+                            update: { url: dto.imageUrl }
+                        }
+                    }
+                    : undefined
+            }
+        });
+    }
 
     async findById(id: string): Promise<Movie> {
-        const movie = await this.prisma.movie.findUnique({ where: { id }, include: { actors: true } });
-        if (!movie) {
+        const movie = await this.prisma.movie.findUnique({ where: { id }, include: { actors: true, poster: true } });
+        if (!movie || !movie.isAvailable) {
             throw new NotFoundException("Movie not found");
         }
         return movie;
     }
 
-    // async delete(id: string): Promise<string> {
-    //     const movie = await this.findById(id);
-    //     if (!movie) {
-    //         throw new NotFoundException("Movie not found");
-    //     }
-    //     await this.movieRepository.remove(movie);
+    async delete(id: string): Promise<string> {
+        const movie = await this.findById(id);
+        if (!movie) {
+            throw new NotFoundException("Movie not found");
+        }
+        await this.prisma.movie.delete({ where: { id } });
 
-    //     return "Movie deleted successfully";
-    // }
+        return "Movie deleted successfully";
+    }
 }

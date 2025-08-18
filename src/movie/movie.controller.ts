@@ -24,13 +24,13 @@ export class MovieController {
     return this.movieService.create(dto);
   }
 
-  // @Put(':id')
-  // updateMovie(@Param('id') id: string, @Body() dto: MovieDto): Promise<MovieEntity> {
-  //   return this.movieService.update(id, dto);
-  // }
+  @Put(':id')
+  updateMovie(@Param('id') id: string, @Body() dto: MovieDto): Promise<Movie> {
+    return this.movieService.update(id, dto);
+  }
 
-  // @Delete(':id')
-  // deleteMovie(@Param('id') id: string): Promise<string> {
-  //   return this.movieService.delete(id);
-  // }
+  @Delete(':id')
+  deleteMovie(@Param('id') id: string): Promise<string> {
+    return this.movieService.delete(id);
+  }
 }
