@@ -11,7 +11,6 @@ export class ActorController {
 
   @Post()
   async createActor(@Body() dto: CreateActorDto): Promise<Actor> {
-    console.log('dto:', dto)
     return this.actorService.createActor(dto);
   }
 }
