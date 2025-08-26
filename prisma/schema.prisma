@@ -10,22 +10,24 @@ datasource db {
 }
 
 model Movie {
-  id          String   @id @default(uuid())
-  createdAt   DateTime @default(now()) @map("created_at")
-  updatedAt   DateTime @updatedAt @map("updated_at")
+  id          String       @id @default(uuid())
 
   title       String
   description String?
-  releaseDate Int @map("release_date")
-  posterUrl   String? @map("poster_url")
-  rating      Float    @default(0.0)
-  isAvailable Boolean  @default(false) @map("is_available")
-  genre       Genre    @default(ACTION)
-  reviews     Review[] @relation("movie_reviews")
-  actors      Actor[]  @relation("movie_actors")
+  releaseYear Int          @map("release_year")
 
-  posterId   String  @unique @map("poster_id")
-  poster     MoviePoster @relation(fields: [posterId], references: [id])
+  rating      Float        @default(0.0)
+  isAvailable Boolean      @default(false) @map("is_available")
+  genre       Genre        @default(DRAMA)
+
+  poster      MoviePoster? @relation(fields: [posterId], references: [id])
+  posterId    String?      @unique @map("poster_id")
+
+  reviews     Review[]     @relation("movie_reviews")
+  actors      Actor[]      @relation("movie_actors")
+
+  createdAt   DateTime     @default(now()) @map("created_at")
+  updatedAt   DateTime     @updatedAt @map("updated_at")
 
   @@map("movies")
 }
@@ -37,7 +39,6 @@ model MoviePoster {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  movieId   String   @map("movie_id")
   movie     Movie?   @relation
 
   @@map("movie_posters")
